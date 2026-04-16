@@ -10,7 +10,7 @@ RUN apt-get update &&  \
 FROM base as builder
 WORKDIR /opt/app
 
-COPY . .
+COPY requirements.txt .
 
 RUN pip install --root-user-action=ignore --no-cache-dir --upgrade pip wheel && \
     python -m venv /opt/app/.venv && \
@@ -18,14 +18,16 @@ RUN pip install --root-user-action=ignore --no-cache-dir --upgrade pip wheel && 
     pip install --no-cache-dir --upgrade -r requirements.txt
 
 FROM base
+WORKDIR /opt/app
 
-# Copy the entire venv.
+# Copy venv
 COPY --from=builder --chown=app:app /opt/app/.venv /opt/app/.venv
 
-# Copy repository files.
+# Copy app source code
+COPY --chown=app:app . .
+
 USER app:app
 
-# This sets some Python runtime variables and disables the internal auto-update.
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PATH=/opt/app/.venv/bin:$PATH

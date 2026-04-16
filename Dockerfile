@@ -31,4 +31,6 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PATH=/opt/app/.venv/bin:$PATH
 
+EXPOSE 5000
+
 CMD ["python", "main.py"]

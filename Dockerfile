@@ -8,8 +8,9 @@ RUN apt-get update &&  \
     useradd --shell /usr/sbin/nologin --create-home -d /opt/app app
 
 FROM base as builder
+WORKDIR /opt/app
 
-COPY requirements.txt .
+COPY . .
 
 RUN pip install --root-user-action=ignore --no-cache-dir --upgrade pip wheel && \
     python -m venv /opt/app/.venv && \
@@ -22,9 +23,7 @@ FROM base
 COPY --from=builder --chown=app:app /opt/app/.venv /opt/app/.venv
 
 # Copy repository files.
-WORKDIR /opt/app
 USER app:app
-COPY --chown=app:app . .
 
 # This sets some Python runtime variables and disables the internal auto-update.
 ENV PYTHONUNBUFFERED=1 \

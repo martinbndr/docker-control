@@ -14,7 +14,7 @@ def index():
 
 @app.route("/list", methods=["GET"])
 def list():
-    client = docker.from_env()
+    client = docker.from_env(version="auto")
     containers = client.containers.list()
     return [c.name for c in containers]
     

@@ -1,6 +1,6 @@
 FROM python:3.12-slim as base
 
-ENV DEBUG=$(DEBUG) \
+ENV DEBUG=$(DEBUG)
 
 RUN apt-get update &&  \
     apt-get install --no-install-recommends -y && \

@@ -7,6 +7,10 @@ RUN apt-get update &&  \
     rm -rf /var/lib/apt/lists/* && \
     useradd --shell /usr/sbin/nologin --create-home -d /opt/app app
 
+ARG DOCKER_GID=989
+RUN groupadd -g ${DOCKER_GID} docker && \
+    usermod -aG docker app
+
 FROM base as builder
 WORKDIR /opt/app
 

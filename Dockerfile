@@ -2,12 +2,13 @@ FROM python:3.12-slim as base
 
 RUN apt-get update &&  \
     apt-get install --no-install-recommends -y \
+    libcairo2 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     useradd --shell /usr/sbin/nologin --create-home -d /opt/app app
 
-ARG DOCKER_GID
-RUN groupadd -g ${DOCKER_GID} docker || true && \
+ARG DOCKER_GID=989
+RUN groupadd -g ${DOCKER_GID} docker && \
     usermod -aG docker app
 
 FROM base as builder

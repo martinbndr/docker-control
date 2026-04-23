@@ -21,7 +21,7 @@ FROM base
 WORKDIR /opt/app
 
 # Copy venv
-COPY --from=builder /opt/app/.venv /opt/app/.venv
+#COPY --from=builder /opt/app/.venv /opt/app/.venv
 
 # Copy app source code
 COPY . .

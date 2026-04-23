@@ -5,11 +5,7 @@ RUN apt-get update &&  \
     libcairo2 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    useradd --shell /usr/sbin/nologin --create-home -d /opt/app app
 
-ARG DOCKER_GID=989
-RUN groupadd -g ${DOCKER_GID} docker && \
-    usermod -aG docker app
 
 FROM base as builder
 WORKDIR /opt/app
@@ -25,12 +21,10 @@ FROM base
 WORKDIR /opt/app
 
 # Copy venv
-COPY --from=builder --chown=app:app /opt/app/.venv /opt/app/.venv
+COPY --from=builder /opt/app/.venv /opt/app/.venv
 
 # Copy app source code
-COPY --chown=app:app . .
-
-USER app:app
+COPY . .
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
